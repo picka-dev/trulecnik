@@ -20,12 +20,6 @@ const deco = [
   { n: 14, top: '46%', left: '7%', size: 40, delay: '1.2s' },
   { n: 1, top: '50%', left: '90%', size: 38, delay: '0.45s' },
 ];
-
-const stats = [
-  { value: '3', label: t('hero.players') },
-  { value: '1', label: t('hero.table') },
-  { value: '0', label: t('hero.mercy') },
-];
 ---
 
 <section class="hero">
@@ -38,7 +32,6 @@ const stats = [
   </div>
 
   <div class="wrap hero-inner">
-    <p class="eyebrow hero-eyebrow">{t('hero.players')} · {t('hero.table')} · {t('hero.mercy')}</p>
     <h1 class="hero-title">{meta.name}</h1>
     <p class="hero-tagline">{meta.tagline[locale]}</p>
 
@@ -46,15 +39,6 @@ const stats = [
       <a class="btn btn-primary" href="#intro">{t('hero.cta')}</a>
       <a class="btn btn-ghost" href="#cheatsheet">{t('hero.ctaCheatsheet')}</a>
     </div>
-
-    <ul class="hero-stats">
-      {stats.map((s) => (
-        <li>
-          <span class="stat-value">{s.value}</span>
-          <span class="stat-label">{s.label}</span>
-        </li>
-      ))}
-    </ul>
   </div>
 </section>
 
@@ -86,11 +70,6 @@ const stats = [
     padding-block: clamp(3.5rem, 9vw, 6.5rem);
     text-align: center;
   }
-  .hero-eyebrow {
-    color: rgba(251, 246, 234, 0.75);
-    justify-content: center;
-    display: flex;
-  }
   .hero-title {
     font-size: clamp(3rem, 1.5rem + 9vw, 6.5rem);
     margin: 0.1em 0 0.15em;
@@ -112,33 +91,7 @@ const stats = [
     gap: 0.75rem;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 2.5rem;
-  }
-
-  .hero-stats {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: inline-grid;
-    grid-auto-flow: column;
-    gap: clamp(1.2rem, 5vw, 3.5rem);
-  }
-  .hero-stats li {
-    display: grid;
-    gap: 0.15rem;
-  }
-  .stat-value {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
-    color: var(--ball-yellow);
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: 0.85rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: rgba(251, 246, 234, 0.75);
+    margin-bottom: 0;
   }
 
   /* Floating decorative balls */

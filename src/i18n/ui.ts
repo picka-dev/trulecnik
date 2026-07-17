@@ -25,9 +25,6 @@ export const ui = {
     'nav.house': 'Naše úpravy',
     'nav.cheatsheet': 'Tahák',
 
-    'hero.players': '3 hráči',
-    'hero.table': '1 stůl',
-    'hero.mercy': '0 slitování',
     'hero.cta': 'Přečíst pravidla',
     'hero.ctaCheatsheet': 'Rovnou na tahák',
 
@@ -47,7 +44,7 @@ export const ui = {
     'legend.groupC': 'Skupina C — koule 11 až 15',
 
     'footer.tagline': 'Kulečník pro tři, konečně s jasnými pravidly.',
-    'footer.madeWith': 'Postaveno pro dobré partičky.',
+    'footer.madeWith': 'Od hráčů pro hráče.',
     'footer.draftNote':
       'Pravidla jsou zatím pracovní návrh — sporné situace jsme vyřešili po svém. Něco byste hráli jinak? Dej vědět.',
   },
@@ -64,9 +61,6 @@ export const ui = {
     'nav.house': 'Our fixes',
     'nav.cheatsheet': 'Cheat sheet',
 
-    'hero.players': '3 players',
-    'hero.table': '1 table',
-    'hero.mercy': '0 mercy',
     'hero.cta': 'Read the rules',
     'hero.ctaCheatsheet': 'Skip to cheat sheet',
 
@@ -86,7 +80,7 @@ export const ui = {
     'legend.groupC': 'Group C — balls 11 to 15',
 
     'footer.tagline': 'Billiards for three, finally with clear rules.',
-    'footer.madeWith': 'Built for good crews.',
+    'footer.madeWith': 'By players, for players.',
     'footer.draftNote':
       'These rules are a working draft — we resolved the edge cases our own way. Play something differently? Let us know.',
   },
