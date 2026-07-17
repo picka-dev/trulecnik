@@ -1,0 +1,127 @@
+---
+import type { Locale } from '../i18n/ui';
+import { useTranslations, alternateLocalePath, localizedPath } from '../i18n/utils';
+import { sections, meta } from '../data/rules';
+import Ball from './Ball.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const other: Locale = locale === 'cs' ? 'en' : 'cs';
+const altPath = alternateLocalePath(Astro.url, other);
+const home = localizedPath('', locale);
+
+const navItems = [
+  ...sections.map((s) => ({ id: s.id, label: t(`nav.${s.id}` as any) })),
+  { id: 'cheatsheet', label: t('nav.cheatsheet') },
+];
+---
+
+<header class="site-header no-print">
+  <div class="wrap bar">
+    <a class="brand" href={home} aria-label={meta.name}>
+      <span class="brand-ball"><Ball n={8} size={30} /></span>
+      <span class="brand-name">{meta.name}</span>
+    </a>
+
+    <nav class="nav" aria-label="Sections">
+      {navItems.map((item) => (
+        <a href={`#${item.id}`}>{item.label}</a>
+      ))}
+    </nav>
+
+    <a class="lang" href={altPath} hreflang={other} lang={other} title={t('lang.switchTo')}>
+      <span class="lang-code">{t('lang.switchToCode')}</span>
+      <span class="lang-full">{t('lang.switchTo')}</span>
+    </a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(251, 246, 234, 0.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 3.75rem;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--ink);
+    flex: none;
+  }
+  .brand-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .brand-ball { display: inline-flex; }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.12s ease, color 0.12s ease;
+  }
+  .nav a:hover {
+    background: rgba(18, 138, 91, 0.1);
+    color: var(--felt-deep);
+  }
+
+  .lang {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border: 2px solid var(--felt);
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--felt-deep);
+    text-decoration: none;
+    background: #fff;
+  }
+  .lang:hover { background: var(--felt); color: #fff; }
+  .lang-full { display: none; }
+
+  @media (min-width: 60rem) {
+    .lang-code { display: none; }
+    .lang-full { display: inline; }
+  }
+
+  /* On narrow screens, hide the section nav (anchors still reachable via TOC). */
+  @media (max-width: 52rem) {
+    .nav { display: none; }
+  }
+</style>

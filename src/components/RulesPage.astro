@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import RuleSection from './RuleSection.astro';
+import CheatSheet from './CheatSheet.astro';
+import type { Locale } from '../i18n/ui';
+import { sections, meta } from '../data/rules';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+
+const title =
+  locale === 'cs'
+    ? `${meta.name} — pravidla kulečníku pro tři`
+    : `${meta.name} — three-player billiards rules`;
+const description = meta.tagline[locale];
+---
+
+<Base locale={locale} title={title} description={description}>
+  <Hero locale={locale} />
+  {sections.map((section) => <RuleSection section={section} locale={locale} />)}
+  <CheatSheet locale={locale} />
+</Base>

@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Locale } from '../i18n/ui';
+import { alternateLocalePath, localizedPath } from '../i18n/utils';
+import { locales, defaultLocale } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+}
+
+const { locale, title, description } = Astro.props;
+const site = Astro.site ?? new URL('https://trulecnik.cz');
+
+const canonicalPath = localizedPath(
+  Astro.url.pathname.replace(new RegExp(`^/(${locales.join('|')})(/|$)`), '/'),
+  locale,
+);
+const canonical = new URL(canonicalPath, site).href;
+
+// hreflang alternates for every locale.
+const alternates = locales.map((l) => ({
+  locale: l,
+  href: new URL(alternateLocalePath(Astro.url, l), site).href,
+}));
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => (
+      <link rel="alternate" hreflang={a.locale} href={a.href} />
+    ))}
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(alternateLocalePath(Astro.url, defaultLocale), site).href}
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={locale === 'cs' ? 'cs_CZ' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link no-print" href="#main">
+      {locale === 'cs' ? 'Přeskočit na obsah' : 'Skip to content'}
+    </a>
+    <Header locale={locale} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+
+    <style>
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        background: var(--gold);
+        color: #3a2400;
+        padding: 0.6rem 1rem;
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        font-family: var(--font-display);
+        font-weight: 600;
+        z-index: 100;
+      }
+      .skip-link:focus {
+        left: 1rem;
+      }
+    </style>
+  </body>
+</html>

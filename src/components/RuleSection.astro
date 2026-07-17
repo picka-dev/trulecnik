@@ -1,0 +1,135 @@
+---
+import type { Section } from '../data/rules';
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import Diagram from './Diagram.astro';
+
+interface Props {
+  section: Section;
+  locale: Locale;
+}
+
+const { section, locale } = Astro.props;
+const t = useTranslations(locale);
+
+// Tiny inline parser: splits a paragraph into plain / **bold** fragments.
+function inline(text: string): { bold: boolean; text: string }[] {
+  return text.split(/(\*\*[^*]+\*\*)/g).filter(Boolean).map((part) => {
+    const bold = part.startsWith('**') && part.endsWith('**');
+    return { bold, text: bold ? part.slice(2, -2) : part };
+  });
+}
+---
+
+<section id={section.id} class="section rule-section">
+  <div class="wrap">
+    <header class="sec-head">
+      <span class="sec-emoji" aria-hidden="true">{section.emoji}</span>
+      <h2>{section.title[locale]}</h2>
+    </header>
+    {section.intro && <p class="sec-intro">{section.intro[locale]}</p>}
+
+    <div class="rules">
+      {section.rules.map((rule) => (
+        <article class:list={['rule', { house: rule.house }]} id={`${section.id}-${rule.id}`}>
+          <div class="rule-body">
+            <div class="rule-titleline">
+              <h3>{rule.title[locale]}</h3>
+              {rule.house && (
+                <span class="badge-house" title={t('badge.houseTitle')}>★ {t('badge.house')}</span>
+              )}
+            </div>
+            {rule.body.map((para) => (
+              <p>
+                {inline(para[locale]).map((frag) =>
+                  frag.bold ? <strong>{frag.text}</strong> : <>{frag.text}</>,
+                )}
+              </p>
+            ))}
+          </div>
+          {rule.diagram && (
+            <div class="rule-diagram">
+              <Diagram kind={rule.diagram} locale={locale} />
+            </div>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .sec-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .sec-emoji {
+    font-size: clamp(1.8rem, 1.4rem + 1.6vw, 2.6rem);
+    line-height: 1;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.15));
+  }
+  .sec-head h2 {
+    font-size: clamp(1.7rem, 1.3rem + 1.8vw, 2.4rem);
+    margin: 0;
+  }
+  .sec-intro {
+    font-size: 1.12rem;
+    color: var(--ink-soft);
+    max-width: var(--reading);
+    margin-bottom: 2rem;
+  }
+
+  .rules {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .rule {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.1rem, 3vw, 1.8rem);
+    box-shadow: var(--shadow-soft);
+  }
+  .rule.house {
+    background: linear-gradient(180deg, var(--gold-soft), #fff 70%);
+    border-color: var(--gold-line);
+  }
+
+  /* Rules with a diagram: two columns on wider screens. */
+  .rule:has(.rule-diagram) {
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 46rem) {
+    .rule:has(.rule-diagram) {
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+    }
+  }
+
+  .rule-titleline {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .rule-titleline h3 {
+    font-size: 1.28rem;
+    margin: 0;
+  }
+  .rule-body p {
+    max-width: var(--reading);
+  }
+  .rule-body p:last-child {
+    margin-bottom: 0;
+  }
+  .rule-diagram {
+    min-width: 0;
+  }
+</style>

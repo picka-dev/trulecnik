@@ -1,0 +1,109 @@
+---
+// Renders a named illustration for a rule. Add new keys here as we build more
+// "situation" diagrams.
+import BilliardTable, { type TableBall } from './BilliardTable.astro';
+import Ball from './Ball.astro';
+import { useTranslations } from '../i18n/utils';
+import type { Locale } from '../i18n/ui';
+import type { DiagramKey } from '../data/rules';
+
+interface Props {
+  kind: DiagramKey;
+  locale: Locale;
+}
+
+const { kind, locale } = Astro.props;
+const t = useTranslations(locale);
+
+// ── Rack layout (see BilliardTable coordinate space) ────────────────────────
+// Apex points toward the head (right); back row sits toward the left rail.
+// Corners (apex + the two back-row ends) hold one ball from each group: 5/10/15.
+const rack: TableBall[] = [
+  { n: 5, x: 86, y: 66 }, // apex — group A corner
+  { n: 1, x: 73.88, y: 59 },
+  { n: 11, x: 73.88, y: 73 },
+  { n: 7, x: 61.76, y: 52 },
+  { n: 3, x: 61.76, y: 66 },
+  { n: 13, x: 61.76, y: 80 },
+  { n: 2, x: 49.64, y: 45 },
+  { n: 8, x: 49.64, y: 59 },
+  { n: 12, x: 49.64, y: 73 },
+  { n: 6, x: 49.64, y: 87 },
+  { n: 10, x: 37.52, y: 38 }, // back corner — group B
+  { n: 4, x: 37.52, y: 52 },
+  { n: 9, x: 37.52, y: 66 },
+  { n: 14, x: 37.52, y: 80 },
+  { n: 15, x: 37.52, y: 94 }, // back corner — group C
+];
+
+const groups: { key: 'A' | 'B' | 'C'; label: string; balls: number[]; color: string }[] = [
+  { key: 'A', label: t('legend.groupA'), balls: [1, 2, 3, 4, 5], color: 'var(--ball-yellow)' },
+  { key: 'B', label: t('legend.groupB'), balls: [6, 7, 8, 9, 10], color: 'var(--ball-green)' },
+  { key: 'C', label: t('legend.groupC'), balls: [11, 12, 13, 14, 15], color: 'var(--ball-red)' },
+];
+---
+
+{kind === 'rack' && (
+  <BilliardTable balls={rack} caption={locale === 'cs' ? 'Postavení s 5, 10 a 15 v rozích' : '5, 10 and 15 in the corners'} />
+)}
+
+{kind === 'groups' && (
+  <div class="groups">
+    {groups.map((g) => (
+      <div class="group-card" style={`--accent:${g.color}`}>
+        <div class="group-head">
+          <span class="group-letter">{g.key}</span>
+          <span class="group-label">{g.label}</span>
+        </div>
+        <div class="group-balls">
+          {g.balls.map((n) => <Ball n={n} size={40} />)}
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
+<style>
+  .groups {
+    display: grid;
+    gap: 0.9rem;
+  }
+  .group-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 0.85rem 1.1rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .group-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+  .group-letter {
+    display: grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    flex: none;
+  }
+  .group-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+  .group-balls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>

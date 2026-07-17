@@ -1,0 +1,142 @@
+---
+// A top-down billiard table drawn as inline SVG. Balls are placed in the table's
+// own coordinate space so distances are true (unlike percentage placement).
+//
+// Coordinate system: the felt playfield spans x ∈ [20, 220], y ∈ [16, 116]
+// (200 × 100 units, a real 2:1 table). Place balls with x/y in that range.
+// Ball radius is 7 units (touching balls are 14 apart).
+import { ballColor, isStripe } from '../lib/ball';
+
+export interface TableBall {
+  n?: number;
+  cue?: boolean;
+  x: number;
+  y: number;
+  /** Optional soft glow ring, e.g. to highlight a group or a target. */
+  ring?: string;
+}
+
+interface Props {
+  balls?: TableBall[];
+  /** Show the felt spots and head string. */
+  markings?: boolean;
+  caption?: string;
+  class?: string;
+}
+
+const { balls = [], markings = true, caption, class: className } = Astro.props;
+
+const R = 7;
+// Felt bounds
+const FX = 20, FY = 16, FW = 200, FH = 100;
+const CX = FX + FW / 2; // 120
+const CY = FY + FH / 2; // 66
+const footSpot = { x: FX + FW * 0.25, y: CY }; // rack area (left)
+const headSpot = { x: FX + FW * 0.75, y: CY }; // break area (right)
+---
+
+<figure class:list={['table-fig', className]}>
+  <svg
+    viewBox="0 0 240 132"
+    role="img"
+    aria-label={caption ?? 'Billiard table'}
+    class="table-svg"
+  >
+    <defs>
+      <radialGradient id="ball-shine" cx="36%" cy="30%" r="75%">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.9)" />
+        <stop offset="22%" stop-color="rgba(255,255,255,0.28)" />
+        <stop offset="55%" stop-color="rgba(255,255,255,0)" />
+        <stop offset="100%" stop-color="rgba(0,0,0,0.22)" />
+      </radialGradient>
+      <linearGradient id="felt-grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1aa06a" />
+        <stop offset="100%" stop-color="#0e7a4f" />
+      </linearGradient>
+      <linearGradient id="wood-grad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#7a4a22" />
+        <stop offset="100%" stop-color="#5e3617" />
+      </linearGradient>
+    </defs>
+
+    <!-- wooden frame -->
+    <rect x="0" y="0" width="240" height="132" rx="14" fill="url(#wood-grad)" />
+    <rect x="6" y="6" width="228" height="120" rx="10" fill="#4a2b12" opacity="0.5" />
+
+    <!-- felt -->
+    <rect x={FX} y={FY} width={FW} height={FH} rx="6" fill="url(#felt-grad)" />
+    <rect
+      x={FX} y={FY} width={FW} height={FH} rx="6"
+      fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.5"
+    />
+
+    {markings && (
+      <g class="markings" stroke="rgba(255,255,255,0.28)" fill="rgba(255,255,255,0.4)">
+        <line x1={headSpot.x} y1={FY} x2={headSpot.x} y2={FY + FH} stroke-width="0.8" />
+        <circle cx={footSpot.x} cy={footSpot.y} r="1.4" stroke="none" />
+        <circle cx={headSpot.x} cy={headSpot.y} r="1.4" stroke="none" />
+      </g>
+    )}
+
+    <!-- pockets: 4 corners + 2 side (mid long rails) -->
+    {[
+      [FX, FY], [CX, FY - 2], [FX + FW, FY],
+      [FX, FY + FH], [CX, FY + FH + 2], [FX + FW, FY + FH],
+    ].map(([px, py]) => (
+      <circle cx={px} cy={py} r="7.5" fill="#08110d" opacity="0.92" />
+    ))}
+
+    <!-- balls -->
+    {balls.map((b) => {
+      const stripe = !b.cue && b.n != null && isStripe(b.n);
+      const base = b.cue ? 'var(--ball-white)' : ballColor(b.n ?? 1);
+      const numOnDark = !b.cue && b.n === 8;
+      return (
+        <g class="table-ball" transform={`translate(${b.x} ${b.y})`}>
+          {b.ring && <circle r={R + 2.6} fill="none" stroke={b.ring} stroke-width="2" opacity="0.9" />}
+          <circle r={R} fill={stripe ? 'var(--ball-white)' : base} />
+          {stripe && (
+            <clipPath id={`clip-${b.n}`}><circle r={R} /></clipPath>
+          )}
+          {stripe && (
+            <rect x={-R} y={-R * 0.42} width={R * 2} height={R * 0.84} fill={base} clip-path={`url(#clip-${b.n})`} />
+          )}
+          {!b.cue && (
+            <>
+              <circle r={R * 0.46} fill="var(--ball-white)" />
+              <text
+                x="0" y="0" text-anchor="middle" dominant-baseline="central"
+                font-family="'Baloo 2', system-ui, sans-serif" font-weight="700"
+                font-size={R * 0.72} fill={numOnDark ? '#000' : '#1c1c1c'}
+              >{b.n}</text>
+            </>
+          )}
+          <circle r={R} fill="url(#ball-shine)" />
+          <circle r={R} fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="0.5" />
+        </g>
+      );
+    })}
+  </svg>
+  {caption && <figcaption class="table-cap no-print">{caption}</figcaption>}
+</figure>
+
+<style>
+  .table-fig {
+    margin: 0;
+    width: 100%;
+  }
+  .table-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    filter: drop-shadow(0 12px 26px -14px rgba(0, 0, 0, 0.5));
+  }
+  .table-cap {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    text-align: center;
+    font-style: italic;
+  }
+</style>
