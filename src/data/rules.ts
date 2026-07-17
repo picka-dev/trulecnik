@@ -169,8 +169,12 @@ export const sections: Section[] = [
         title: { cs: 'Platný šťouch', en: 'A legal shot' },
         body: [
           {
-            cs: 'Bílá musí nejdřív zasáhnout některou soupeřovu kouli — je jedno kterou. Když bílá zasáhne jako první tvoji vlastní kouli, je to faul. Soupeř, který hraje po tobě, si v tom případě nebere bílou do ruky, ale má **dva šťouchy** — prvním si může bílou rozehrát do lepší pozice a teprve druhým potápět. Po prvním kontaktu navíc musí buď padnout nějaká koule, nebo se aspoň jedna koule musí dotknout mantinelu. Jinak je to faul se stejným trestem (dva šťouchy pro soupeře).',
-            en: "The cue ball must first strike one of your opponents' balls — any of them will do. If the cue ball hits one of your own balls first, that is a foul. The opponent who shoots next does not get ball in hand for it; instead they get **two shots** — they may use the first to nudge the cue ball into a better spot and only pot on the second. On top of that, after the first contact a ball must be pocketed or at least one ball must reach a cushion. Otherwise it is a foul with the same penalty (two shots for the next opponent).",
+            cs: 'Platný šťouch má dvě podmínky. Bílá musí **nejdřív zasáhnout některou soupeřovu kouli** — je jedno kterou. A **po tomto zásahu musí buď nějaká koule padnout, nebo se aspoň jedna koule dotknout mantinelu.** Když bílá trefí jako první tvoji vlastní kouli, nebo se po zásahu nestane ani jedno z toho, je to faul.',
+            en: "A legal shot has two conditions. The cue ball must **first strike one of your opponents' balls** — any of them will do. And **after that contact, either a ball must be pocketed or at least one ball must reach a cushion.** If the cue ball hits one of your own balls first, or neither of those happens after contact, it is a foul.",
+          },
+          {
+            cs: 'U obou těchto faulů bílá zůstává ležet, kde je — soupeř, který hraje po tobě, si ji nebere do ruky, ale má **dva šťouchy**: prvním si může bílou rozehrát do lepší pozice a teprve druhým potápět.',
+            en: 'On both of these fouls the cue ball stays where it lies — the opponent who shoots after you does not get ball in hand, but gets **two shots**: the first to nudge the cue ball into a better spot, the second to actually pot.',
           },
         ],
       },
@@ -180,8 +184,8 @@ export const sections: Section[] = [
         title: { cs: 'Když spadne tvoje vlastní koule', en: 'When you sink your own ball' },
         body: [
           {
-            cs: 'Stane se. Tvoje potopená koule **zůstává dole** — právě jsi si ublížil sám a navíc jsi pomohl soupeři, který hraje v kole před tebou: díky tobě se mu vrací jedna jeho koule do hry, pokud nějakou potopenou má. Vrácená koule se pokládá na zadní značku (foot spot) stejně jako každá jiná vrácená koule. Potopením vlastní koule ti končí tah — bílá zůstává ležet a normálně hraje další hráč v pořadí. Když jsi ale jedním šťouchem potopil svoji kouli i soupeřovu, vrátí se do hry i ta tvoje potopená koule.',
-            en: 'It happens. Your potted ball **stays down** — you have just hurt yourself, and on top of that you have helped the opponent who takes their turn just before you: thanks to you, one of their balls comes back into play, provided they have any pocketed. The returned ball goes on the foot spot, just like any other returned ball. Potting your own ball ends your turn — the cue ball stays where it lies and the next player simply plays on. If, however, a single shot potted both your own ball and an opponent’s, then your potted ball comes back into play as well.',
+            cs: 'Stane se. Tvoje potopená koule **zůstává dole** — právě jsi si ublížil sám a navíc jsi pomohl soupeři, který hraje v kole před tebou: díky tobě se mu vrací jedna jeho koule do hry, pokud nějakou potopenou má. Když už byl tento soupeř vyřazený, touhle vrácenou koulí se rovnou vrací zpátky do hry. Vrácená koule se pokládá na zadní značku (foot spot) stejně jako každá jiná vrácená koule. Potopením vlastní koule ti končí tah — bílá zůstává ležet a normálně hraje další hráč v pořadí. Když jsi ale jedním šťouchem potopil svoji kouli i soupeřovu, tvoje koule **i tak zůstává dole**. Navíc se soupeři vrací zpět i ta jeho koule, kterou jsi právě potopil — pokládá se na zadní značku (foot spot) stejně jako každá jiná vrácená koule.',
+            en: 'It happens. Your potted ball **stays down** — you have just hurt yourself, and on top of that you have helped the opponent who takes their turn just before you: thanks to you, one of their balls comes back into play, provided they have any pocketed. If that opponent had already been eliminated, this returned ball brings them straight back into the game. The returned ball goes on the foot spot, just like any other returned ball. Potting your own ball ends your turn — the cue ball stays where it lies and the next player simply plays on. If, however, a single shot potted both your own ball and an opponent’s, your ball **still stays down** — and on top of that, the opponent gets back the very ball you just sank, spotted on the foot spot like any other returned ball.',
           },
         ],
       },
@@ -214,16 +218,8 @@ export const sections: Section[] = [
         title: { cs: 'Trest za faul', en: 'The penalty for a foul' },
         body: [
           {
-            cs: 'Každý faul má dva důsledky zároveň — ten druhý závisí na tom, kde skončí bílá:',
-            en: 'Every foul carries two consequences at once — the second one depends on where the cue ball ends up:',
-          },
-          {
-            cs: '**1.** Následující hráč dostane **jednu** svoji potopenou kouli zpět na stůl, pokud nějakou potopenou má. Platí to **i když je tento hráč už vyřazený** — vrácená koule ho rovnou vrací zpátky do hry. Faulující hráč nedostává nic.',
-            en: '**1.** The next player gets **one** of their own pocketed balls returned to the table, if they have any pocketed. This holds **even if that player is already eliminated** — the returned ball brings them straight back into the game. The fouling player gets nothing.',
-          },
-          {
-            cs: '**2.** Co dostane soupeř navíc, závisí na bílé:',
-            en: '**2.** What the next player gets on top of that depends on the cue ball:',
+            cs: 'Trest za faul závisí jen na tom, kde skončí bílá koule:',
+            en: 'The penalty for a foul depends only on where the cue ball ends up:',
           },
           {
             cs: '**Bílá skončila mimo hrací plochu** — spadla do kapsy, sletěla ze stolu, nebo jde o faul z rozstřelu. Následující hráč dostává **bílou do ruky** a položí ji, kam chce (u faulu z rozstřelu za čáru).',
@@ -234,8 +230,8 @@ export const sections: Section[] = [
             en: '**The cue ball stayed on the table** — no contact, first contact with one of your own balls, or nothing potted and no ball reaching a cushion after contact. The cue ball stays where it lies and the next player gets **two shots** (reposition the cue ball with the first, only pot on the second).',
           },
           {
-            cs: 'Číslované koule potopené faulovaným šťouchem zůstávají dole. Na stůl se vrací jen bílá (když opustila hrací plochu) a jedna soupeřova koule podle bodu 1.',
-            en: "Numbered balls potted on the fouling shot stay down. Only the cue ball comes back (when it left the playing area), plus one of the next player's balls under point 1.",
+            cs: 'Číslované koule potopené faulovaným šťouchem zůstávají dole a za faul se nikomu nevrací žádná koule — na stůl se vrací jen bílá, a to jen když opustila hrací plochu. Koule se vrací výhradně tehdy, když si někdo potopí vlastní kouli (viz „Když spadne tvoje vlastní koule").',
+            en: 'Numbered balls potted on the fouling shot stay down, and a foul returns no ball to anyone — only the cue ball comes back, and only when it left the playing area. Balls return solely when a player sinks their own ball (see “When you sink your own ball”).',
           },
         ],
       },
@@ -365,13 +361,13 @@ export const sections: Section[] = [
         id: 'recap-foul',
         house: true,
         title: {
-          cs: 'Faul = koule zpět + bílá do ruky nebo dva šťouchy',
-          en: 'Foul = a ball back + ball in hand or two shots',
+          cs: 'Faul = bílá do ruky, nebo dva šťouchy',
+          en: 'Foul = ball in hand or two shots',
         },
         body: [
           {
-            cs: 'Sjednotili jsme trest: následující hráč dostane jednu kouli zpět (i když už byl vyřazený) a k tomu bílou do ruky, nebo dva šťouchy — podle toho, kde skončí bílá.',
-            en: 'We unified the penalty: the next player gets one ball back (even if they were already eliminated), plus either ball in hand or two shots — depending on where the cue ball ends up.',
+            cs: 'Sjednotili jsme trest za faul podle bílé: když opustí hrací plochu, dostává následující hráč bílou do ruky; když zůstane na stole, má dva šťouchy. Za faul se žádná koule nevrací.',
+            en: 'We unified the foul penalty around the cue ball: if it leaves the playing area the next player gets ball in hand; if it stays on the table, they get two shots. No ball is returned for a foul.',
           },
         ],
       },
@@ -419,12 +415,12 @@ export const cheatsheet: L10n[] = [
     en: 'Own ball: it stays down, your turn ends, the opponent before you gets a ball back.',
   },
   {
-    cs: 'Faul: následující hráč dostane kouli zpět a k tomu bílou do ruky, nebo dva šťouchy.',
-    en: 'Foul: the next player gets a ball back, plus ball in hand or two shots.',
+    cs: 'Faul: bílá mimo plochu → bílá do ruky; bílá na stole → dva šťouchy.',
+    en: 'Foul: cue ball off the area → ball in hand; cue ball on the table → two shots.',
   },
   {
-    cs: 'Nula vlastních koulí = konec — ale faul soupeře tě může vrátit do hry.',
-    en: "Zero of your own balls = out — but an opponent's foul can bring you back.",
+    cs: 'Nula vlastních koulí = konec — vrátí tě, až soupeř po tobě potopí vlastní kouli.',
+    en: 'Zero of your own balls = out — you return when the opponent after you sinks their own ball.',
   },
   {
     cs: 'Koule z jednoho šťouchu padají naráz — rozhoduje stav stolu.',
