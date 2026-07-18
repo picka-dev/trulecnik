@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://trulecnik.cz/sitemap-index.xml

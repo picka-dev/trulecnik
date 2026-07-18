@@ -16,7 +16,10 @@ const title =
   locale === 'cs'
     ? `${meta.name} — pravidla kulečníku pro tři`
     : `${meta.name} — three-player billiards rules`;
-const description = meta.tagline[locale];
+const description =
+  locale === 'cs'
+    ? 'Kompletní pravidla Trulečníku — kulečníku pro tři hráče podle hry cut-throat, s dořešenými spornými situacemi. Včetně taháku k vytištění a losovačky skupin.'
+    : 'The complete rules of Trulečník — three-player cut-throat billiards with the argument-starting edge cases resolved. Includes a printable cheat sheet and a group draw.';
 ---
 
 <Base locale={locale} title={title} description={description}>
