@@ -13,7 +13,7 @@ export interface L10n {
   en: string;
 }
 
-export type DiagramKey = 'groups' | 'rack';
+export type DiagramKey = 'groups' | 'rack' | 'break' | 'legal-shot' | 'own-ball' | 'spotting';
 
 export interface Rule {
   id: string;
@@ -123,6 +123,7 @@ export const sections: Section[] = [
       {
         id: 'break',
         title: { cs: 'Rozstřel', en: 'The break' },
+        diagram: 'break',
         body: [
           {
             cs: 'Rozstřeluje hráč se skupinou A; bílou má v ruce za čárou (head string). Rozstřel je platný, když **potopí aspoň jednu číslovanou kouli, nebo pošle aspoň čtyři koule na mantinel.** Když to nesplní, je to faul s vlastním trestem: další hráč může buď hrát pozici jak leží, nebo nechat znovu postavit a rozstřelit sám.',
@@ -167,6 +168,7 @@ export const sections: Section[] = [
         id: 'legal-shot',
         house: true,
         title: { cs: 'Platný šťouch', en: 'A legal shot' },
+        diagram: 'legal-shot',
         body: [
           {
             cs: 'Platný šťouch má dvě podmínky. Bílá musí **nejdřív zasáhnout některou soupeřovu kouli** — je jedno kterou. A **po tomto zásahu musí buď nějaká koule padnout, nebo se aspoň jedna koule dotknout mantinelu.** Když bílá trefí jako první tvoji vlastní kouli, nebo se po zásahu nestane ani jedno z toho, je to faul.',
@@ -182,6 +184,7 @@ export const sections: Section[] = [
         id: 'own-ball',
         house: true,
         title: { cs: 'Když spadne tvoje vlastní koule', en: 'When you sink your own ball' },
+        diagram: 'own-ball',
         body: [
           {
             cs: 'Stane se. Tvoje potopená koule **zůstává dole** — právě jsi si ublížil sám a navíc jsi pomohl **předchozímu hráči v pořadí skupin**: díky tobě se mu vrací jedna jeho koule do hry, pokud nějakou potopenou má. Počítá se čistě pořadí skupin, i když je tento hráč zrovna vyřazený — touhle vrácenou koulí se rovnou vrací zpátky do hry. Vrácená koule se pokládá na [zadní značku](#fouls-spotting).',
@@ -251,6 +254,7 @@ export const sections: Section[] = [
         id: 'spotting',
         house: true,
         title: { cs: 'Kam se vrací koule', en: 'Where returned balls go' },
+        diagram: 'spotting',
         body: [
           {
             cs: 'Vrácená koule se pokládá na zadní značku (foot spot). Když je obsazená, položí se těsně za ni na podélné ose směrem k zadnímu mantinelu, na první volné místo.',

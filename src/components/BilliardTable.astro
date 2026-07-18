@@ -16,15 +16,38 @@ export interface TableBall {
   ring?: string;
 }
 
+export interface TableArrow {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  /** Stroke color; defaults to a soft white. */
+  color?: string;
+  /** Dashed = a rolling ball's path (or a forbidden one); solid = the shot. */
+  dash?: boolean;
+  opacity?: number;
+}
+
 interface Props {
   balls?: TableBall[];
+  /** Movement / aiming arrows drawn on top of the balls. */
+  arrows?: TableArrow[];
+  /** Shade the in-hand area behind the head string (for break diagrams). */
+  shadeBehindHead?: boolean;
   /** Show the felt spots and head string. */
   markings?: boolean;
   caption?: string;
   class?: string;
 }
 
-const { balls = [], markings = true, caption, class: className } = Astro.props;
+const {
+  balls = [],
+  arrows = [],
+  shadeBehindHead = false,
+  markings = true,
+  caption,
+  class: className,
+} = Astro.props;
 
 const R = 7;
 // Felt bounds
@@ -33,6 +56,12 @@ const CX = FX + FW / 2; // 120
 const CY = FY + FH / 2; // 66
 const footSpot = { x: FX + FW * 0.25, y: CY }; // rack area (left)
 const headSpot = { x: FX + FW * 0.75, y: CY }; // break area (right)
+
+// Arrowheads must match their line's color, so one <marker> per distinct color.
+// Ids are salted per instance — several tables can share a page.
+const ARROW_DEFAULT = 'rgba(255,255,255,0.9)';
+const arrowColors = [...new Set(arrows.map((a) => a.color ?? ARROW_DEFAULT))];
+const uid = `t${Math.random().toString(36).slice(2, 7)}`;
 ---
 
 <figure class:list={['table-fig', className]}>
@@ -57,6 +86,19 @@ const headSpot = { x: FX + FW * 0.75, y: CY }; // break area (right)
         <stop offset="0%" stop-color="#7a4a22" />
         <stop offset="100%" stop-color="#5e3617" />
       </linearGradient>
+      <clipPath id={`${uid}-felt`}>
+        <rect x={FX} y={FY} width={FW} height={FH} rx="6" />
+      </clipPath>
+      {arrowColors.map((c, i) => (
+        <marker
+          id={`${uid}-arr${i}`}
+          viewBox="0 0 10 10" refX="8.5" refY="5"
+          markerWidth="4.4" markerHeight="4.4"
+          orient="auto-start-reverse"
+        >
+          <path d="M0,0 L10,5 L0,10 z" fill={c} />
+        </marker>
+      ))}
     </defs>
 
     <!-- wooden frame -->
@@ -69,6 +111,13 @@ const headSpot = { x: FX + FW * 0.75, y: CY }; // break area (right)
       x={FX} y={FY} width={FW} height={FH} rx="6"
       fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.5"
     />
+
+    {shadeBehindHead && (
+      <rect
+        x={headSpot.x} y={FY} width={FX + FW - headSpot.x} height={FH}
+        fill="rgba(255,255,255,0.13)" clip-path={`url(#${uid}-felt)`}
+      />
+    )}
 
     {markings && (
       <g class="markings" stroke="rgba(255,255,255,0.28)" fill="rgba(255,255,255,0.4)">
@@ -116,6 +165,22 @@ const headSpot = { x: FX + FW * 0.75, y: CY }; // break area (right)
         </g>
       );
     })}
+
+    <!-- arrows -->
+    {arrows.map((a) => {
+      const c = a.color ?? ARROW_DEFAULT;
+      return (
+        <line
+          x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2}
+          stroke={c} stroke-width="1.7" stroke-linecap="round"
+          stroke-dasharray={a.dash ? '3.2 2.6' : undefined}
+          opacity={a.opacity ?? 1}
+          marker-end={`url(#${uid}-arr${arrowColors.indexOf(c)})`}
+        />
+      );
+    })}
+
+    <slot />
   </svg>
   {caption && <figcaption class="table-cap no-print">{caption}</figcaption>}
 </figure>

@@ -1,7 +1,7 @@
 ---
 // Renders a named illustration for a rule. Add new keys here as we build more
 // "situation" diagrams.
-import BilliardTable, { type TableBall } from './BilliardTable.astro';
+import BilliardTable, { type TableBall, type TableArrow } from './BilliardTable.astro';
 import Ball from './Ball.astro';
 import { useTranslations } from '../i18n/utils';
 import type { Locale } from '../i18n/ui';
@@ -36,6 +36,50 @@ const rack: TableBall[] = [
   { n: 15, x: 37.52, y: 94 }, // back corner — group C
 ];
 
+// ── Break: the same rack, cue ball in hand behind the head string ───────────
+const breakBalls: TableBall[] = [
+  ...rack,
+  { cue: true, x: 190, y: 52, ring: 'rgba(255,255,255,0.7)' },
+];
+const breakArrows: TableArrow[] = [
+  { x1: 181, y1: 53.5, x2: 96, y2: 64.5, opacity: 0.8 },
+];
+
+// ── Legal shot (shooter owns group A): first contact must be an opponent ────
+const legalBalls: TableBall[] = [
+  { cue: true, x: 150, y: 88 },
+  { n: 9, x: 100, y: 60, ring: 'rgba(255,255,255,0.8)' }, // opponent — OK first hit
+  { n: 3, x: 112, y: 105 }, // shooter's own — a foul as first hit
+];
+const legalArrows: TableArrow[] = [
+  { x1: 142, y1: 83.5, x2: 109, y2: 65 }, // cue → opponent ball
+  { x1: 95, y1: 52.5, x2: 78, y2: 26, dash: true, opacity: 0.55 }, // on to the cushion
+  { x1: 142, y1: 92, x2: 121, y2: 101, color: '#ff5d5d', dash: true }, // cue → own ball
+];
+
+// ── Own ball down (shooter owns group B): a legal hit on the 13 caroms the
+// shooter's own 8 into the pocket; group A gets a ball back on the foot spot.
+const ownBallBalls: TableBall[] = [
+  { cue: true, x: 159, y: 70 },
+  { n: 13, x: 185, y: 90 }, // opponent ball, hit first — the shot itself is fine
+  { n: 8, x: 196, y: 98, ring: '#ff5d5d' }, // shooter's own ball, knocked in
+  { n: 2, x: 70, y: 66, ring: 'rgba(255,255,255,0.8)' }, // returned to A on the foot spot
+];
+const ownBallArrows: TableArrow[] = [
+  { x1: 166, y1: 76, x2: 177, y2: 84 }, // cue → 13
+  { x1: 203, y1: 103.5, x2: 215, y2: 112.5, color: '#ff5d5d', dash: true }, // 8 → pocket
+];
+
+// ── Spotting: the foot spot is occupied, so the returned ball goes just
+// behind it on the long string, toward the foot rail (left).
+const spottingBalls: TableBall[] = [
+  { n: 11, x: 70, y: 66 }, // already sitting on the foot spot
+  { n: 4, x: 56, y: 66, ring: 'rgba(255,255,255,0.8)' }, // the returned ball
+];
+const spottingArrows: TableArrow[] = [
+  { x1: 47, y1: 66, x2: 33, y2: 66, dash: true, opacity: 0.6 },
+];
+
 const groups: { key: 'A' | 'B' | 'C'; label: string; balls: number[]; color: string }[] = [
   { key: 'A', label: t('legend.groupA'), balls: [1, 2, 3, 4, 5], color: 'var(--ball-yellow)' },
   { key: 'B', label: t('legend.groupB'), balls: [6, 7, 8, 9, 10], color: 'var(--ball-green)' },
@@ -45,6 +89,50 @@ const groups: { key: 'A' | 'B' | 'C'; label: string; balls: number[]; color: str
 
 {kind === 'rack' && (
   <BilliardTable balls={rack} caption={locale === 'cs' ? 'Postavení s 5, 10 a 15 v rozích' : '5, 10 and 15 in the corners'} />
+)}
+
+{kind === 'break' && (
+  <BilliardTable
+    balls={breakBalls}
+    arrows={breakArrows}
+    shadeBehindHead
+    caption={locale === 'cs'
+      ? 'Rozstřel: bílá v ruce kdekoli ve vyznačené zóně za čárou'
+      : 'The break: cue ball in hand anywhere in the shaded area behind the head string'}
+  />
+)}
+
+{kind === 'legal-shot' && (
+  <BilliardTable
+    balls={legalBalls}
+    arrows={legalArrows}
+    caption={locale === 'cs'
+      ? 'Hraješ skupinu A: nejdřív musíš trefit soupeřovu kouli (✓ devítku) — vlastní trojka jako první zásah je faul (✕)'
+      : 'You own group A: hit an opponent ball first (✓ the 9) — touching your own 3 first is a foul (✕)'}
+  >
+    <text class="mark mark-ok" x="131" y="69">✓</text>
+    <text class="mark mark-bad" x="136" y="102">✕</text>
+  </BilliardTable>
+)}
+
+{kind === 'own-ball' && (
+  <BilliardTable
+    balls={ownBallBalls}
+    arrows={ownBallArrows}
+    caption={locale === 'cs'
+      ? 'Hráč se skupinou B trefil třináctku, ta ale srazila do kapsy i jeho vlastní osmičku — osmička zůstává dole a hráči se skupinou A se vrací koule na zadní značku'
+      : "The group-B player hit the 13, but it knocked their own 8 in too — the 8 stays down, and the group-A player gets a ball back on the foot spot"}
+  />
+)}
+
+{kind === 'spotting' && (
+  <BilliardTable
+    balls={spottingBalls}
+    arrows={spottingArrows}
+    caption={locale === 'cs'
+      ? 'Zadní značka je obsazená jedenáctkou — vrácená čtyřka se pokládá těsně za ni, směrem k zadnímu mantinelu'
+      : 'The foot spot is taken by the 11 — the returned 4 goes just behind it, toward the foot rail'}
+  />
 )}
 
 {kind === 'groups' && (
@@ -64,6 +152,23 @@ const groups: { key: 'A' | 'B' | 'C'; label: string; balls: number[]; color: str
 )}
 
 <style>
+  /* ✓ / ✕ marks slotted into the table SVG. */
+  .mark {
+    font-family: 'Baloo 2', system-ui, sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    text-anchor: middle;
+    paint-order: stroke;
+    stroke: rgba(0, 0, 0, 0.4);
+    stroke-width: 0.6px;
+  }
+  .mark-ok {
+    fill: #c9f7c2;
+  }
+  .mark-bad {
+    fill: #ff8a8a;
+  }
+
   .groups {
     display: grid;
     gap: 0.9rem;
