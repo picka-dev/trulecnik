@@ -16,6 +16,7 @@ const home = localizedPath('', locale);
 
 const navItems = [
   ...sections.map((s) => ({ id: s.id, label: t(`nav.${s.id}` as any) })),
+  { id: 'picker', label: t('nav.picker') },
   { id: 'cheatsheet', label: t('nav.cheatsheet') },
 ];
 ---

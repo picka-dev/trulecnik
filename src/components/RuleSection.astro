@@ -12,11 +12,22 @@ interface Props {
 const { section, locale } = Astro.props;
 const t = useTranslations(locale);
 
-// Tiny inline parser: splits a paragraph into plain / **bold** fragments.
-function inline(text: string): { bold: boolean; text: string }[] {
-  return text.split(/(\*\*[^*]+\*\*)/g).filter(Boolean).map((part) => {
-    const bold = part.startsWith('**') && part.endsWith('**');
-    return { bold, text: bold ? part.slice(2, -2) : part };
+// Tiny inline parser: splits a paragraph into plain / **bold** / [link](#href)
+// fragments.
+type Fragment = { kind: 'text' | 'bold' | 'link'; text: string; href?: string };
+
+const TOKEN = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
+
+function inline(text: string): Fragment[] {
+  return text.split(TOKEN).filter(Boolean).map((part): Fragment => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return { kind: 'bold', text: part.slice(2, -2) };
+    }
+    const link = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(part);
+    if (link) {
+      return { kind: 'link', text: link[1], href: link[2] };
+    }
+    return { kind: 'text', text: part };
   });
 }
 ---
@@ -42,7 +53,13 @@ function inline(text: string): { bold: boolean; text: string }[] {
             {rule.body.map((para) => (
               <p>
                 {inline(para[locale]).map((frag) =>
-                  frag.bold ? <strong>{frag.text}</strong> : <>{frag.text}</>,
+                  frag.kind === 'bold' ? (
+                    <strong>{frag.text}</strong>
+                  ) : frag.kind === 'link' ? (
+                    <a class="rule-link" href={frag.href}>{frag.text}</a>
+                  ) : (
+                    <>{frag.text}</>
+                  ),
                 )}
               </p>
             ))}
@@ -131,5 +148,23 @@ function inline(text: string): { bold: boolean; text: string }[] {
   }
   .rule-diagram {
     min-width: 0;
+  }
+
+  /* In-rule cross links (e.g. to the group draw). */
+  .rule-link {
+    font-weight: 700;
+    color: var(--felt-deep);
+    text-decoration-color: rgba(18, 138, 91, 0.45);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
+  }
+  .rule-link:hover {
+    color: var(--felt);
+    text-decoration-color: currentColor;
+  }
+  /* The draw is interactive, so it is useless on paper — keep the words, drop
+     the link affordance. */
+  @media print {
+    .rule-link { text-decoration: none; font-weight: 800; }
   }
 </style>

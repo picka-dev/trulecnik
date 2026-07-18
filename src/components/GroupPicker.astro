@@ -1,0 +1,319 @@
+---
+// Randomly assigns each of three player names to one group of balls.
+// Purely client-side: the three group cards are rendered up front (so the ball
+// SVGs come from the same <Ball> component as everywhere else) and the draw
+// only fills in the names.
+import Ball from './Ball.astro';
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const groups: { key: 'A' | 'B' | 'C'; label: string; balls: number[]; color: string }[] = [
+  { key: 'A', label: t('legend.groupA'), balls: [1, 2, 3, 4, 5], color: 'var(--ball-yellow)' },
+  { key: 'B', label: t('legend.groupB'), balls: [6, 7, 8, 9, 10], color: 'var(--ball-green)' },
+  { key: 'C', label: t('legend.groupC'), balls: [11, 12, 13, 14, 15], color: 'var(--ball-red)' },
+];
+
+const slots = [1, 2, 3];
+---
+
+<section id="picker" class="section picker no-print">
+  <div class="wrap">
+    <header class="sec-head">
+      <span class="sec-emoji" aria-hidden="true">🎲</span>
+      <div>
+        <h2>{t('picker.title')}</h2>
+        <p class="picker-sub">{t('picker.subtitle')}</p>
+      </div>
+    </header>
+
+    <form class="picker-form" data-picker novalidate>
+      <div class="picker-fields">
+        {slots.map((i) => (
+          <div class="field">
+            <label for={`picker-name-${i}`}>{t('picker.player')} {i}</label>
+            <input
+              id={`picker-name-${i}`}
+              name={`name${i}`}
+              type="text"
+              maxlength="24"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder={`${t('picker.player')} ${i}`}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div class="picker-actions">
+        <button
+          class="btn btn-primary"
+          type="submit"
+          data-draw
+          data-label-draw={t('picker.draw')}
+          data-label-again={t('picker.again')}
+        >{t('picker.draw')}</button>
+        <p class="picker-error" data-error hidden>{t('picker.needNames')}</p>
+      </div>
+    </form>
+
+    <div class="picker-results" data-results aria-live="polite" hidden>
+      <h3 class="picker-result-title">{t('picker.result')}</h3>
+      <div class="groups">
+        {groups.map((g) => (
+          <div class="group-card" data-group={g.key} style={`--accent:${g.color}`}>
+            <div class="group-head">
+              <span class="group-letter">{g.key}</span>
+              <span class="group-label">{g.label}</span>
+            </div>
+            <p class="group-winner" data-winner></p>
+            <div class="group-balls">
+              {g.balls.map((n) => <Ball n={n} size={36} />)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  /** Fisher–Yates using the crypto RNG, so the draw is genuinely unbiased. */
+  function shuffle<T>(items: T[]): T[] {
+    const out = items.slice();
+    const rand = new Uint32Array(out.length);
+    crypto.getRandomValues(rand);
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = rand[i] % (i + 1);
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out;
+  }
+
+  const form = document.querySelector<HTMLFormElement>('[data-picker]');
+  const results = document.querySelector<HTMLElement>('[data-results]');
+  const error = document.querySelector<HTMLElement>('[data-error]');
+  const button = document.querySelector<HTMLButtonElement>('[data-draw]');
+
+  if (form && results && error && button) {
+    const inputs = Array.from(form.querySelectorAll<HTMLInputElement>('input[type="text"]'));
+    const cards = Array.from(results.querySelectorAll<HTMLElement>('.group-card'));
+
+    inputs.forEach((input) => {
+      input.addEventListener('input', () => {
+        error.hidden = true;
+        input.classList.remove('invalid');
+      });
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const names = inputs.map((input) => input.value.trim());
+      const missing = names.some((name) => name === '');
+      inputs.forEach((input, i) => input.classList.toggle('invalid', names[i] === ''));
+
+      if (missing) {
+        error.hidden = false;
+        inputs.find((input) => input.value.trim() === '')?.focus();
+        return;
+      }
+      error.hidden = true;
+
+      const drawn = shuffle(names);
+      cards.forEach((card, i) => {
+        const winner = card.querySelector<HTMLElement>('[data-winner]');
+        if (winner) winner.textContent = drawn[i];
+      });
+
+      results.hidden = false;
+      // Restart the entrance animation on every re-draw.
+      cards.forEach((card, i) => {
+        card.classList.remove('drawn');
+        void card.offsetWidth;
+        card.style.setProperty('--delay', `${i * 90}ms`);
+        card.classList.add('drawn');
+      });
+
+      button.textContent = button.dataset.labelAgain ?? button.textContent;
+    });
+  }
+</script>
+
+<style>
+  .picker { background: var(--cream-2); }
+
+  .sec-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .sec-emoji {
+    font-size: clamp(1.8rem, 1.4rem + 1.6vw, 2.6rem);
+    line-height: 1;
+    filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.15));
+  }
+  .sec-head h2 {
+    font-size: clamp(1.7rem, 1.3rem + 1.8vw, 2.4rem);
+    margin: 0;
+  }
+  .picker-sub {
+    margin: 0.2rem 0 0;
+    color: var(--ink-soft);
+    max-width: var(--reading);
+  }
+
+  /* ── Form ──────────────────────────────────────────────────────────────── */
+
+  .picker-form {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.1rem, 3vw, 1.8rem);
+    box-shadow: var(--shadow-soft);
+  }
+  .picker-fields {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 40rem) {
+    .picker-fields { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .field {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+  .field label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .field input {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--cream);
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    padding: 0.6rem 1.05rem;
+    width: 100%;
+    transition: border-color 0.12s ease, background 0.12s ease;
+  }
+  .field input::placeholder {
+    color: var(--ink-soft);
+    font-weight: 400;
+    opacity: 0.7;
+  }
+  .field input:hover { border-color: #d8cbab; }
+  .field input:focus {
+    border-color: var(--felt);
+    background: #fff;
+    outline: none;
+  }
+  .field input:focus-visible {
+    outline: 3px solid var(--chalk);
+    outline-offset: 2px;
+  }
+  .field input.invalid { border-color: var(--ball-red); }
+
+  .picker-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    margin-top: 1.25rem;
+  }
+  .picker-error {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.94rem;
+    color: var(--ball-red);
+  }
+
+  /* ── Results ───────────────────────────────────────────────────────────── */
+
+  .picker-results { margin-top: 1.75rem; }
+  .picker-result-title {
+    font-size: 1.15rem;
+    margin: 0 0 0.9rem;
+    color: var(--felt-deep);
+  }
+
+  .groups {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 46rem) {
+    .groups { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .group-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 0.85rem 1.1rem;
+    box-shadow: var(--shadow-soft);
+    min-width: 0;
+  }
+  .group-card.drawn {
+    animation: pop 0.34s cubic-bezier(0.2, 0.9, 0.3, 1.3) backwards;
+    animation-delay: var(--delay, 0ms);
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(10px) scale(0.96); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .group-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  .group-letter {
+    display: grid;
+    place-items: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    flex: none;
+  }
+  .group-label {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  .group-winner {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.4rem;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 0 0 0.7rem;
+    overflow-wrap: anywhere;
+  }
+  .group-balls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+</style>

@@ -23,6 +23,7 @@ export const ui = {
     'nav.fouls': 'Fauly',
     'nav.winning': 'Konec hry',
     'nav.house': 'Naše úpravy',
+    'nav.picker': 'Losovačka',
     'nav.cheatsheet': 'Tahák',
 
     'hero.cta': 'Přečíst pravidla',
@@ -33,6 +34,15 @@ export const ui = {
 
     'toc.title': 'Obsah',
     'jumpTo': 'Přejít na',
+
+    'picker.title': 'Losovačka skupin',
+    'picker.subtitle':
+      'Napište tři jména a nechte náhodu rozhodnout, kdo dostane kterou skupinu koulí.',
+    'picker.player': 'Hráč',
+    'picker.draw': '🎲 Rozlosovat',
+    'picker.again': '🎲 Losovat znovu',
+    'picker.result': 'Vylosováno',
+    'picker.needNames': 'Vyplň všechna tři jména.',
 
     'cheatsheet.title': 'Tahák na jednu stranu',
     'cheatsheet.subtitle': 'Rychlý přehled pro chvíle, kdy se hádáte u stolu.',
@@ -59,6 +69,7 @@ export const ui = {
     'nav.fouls': 'Fouls',
     'nav.winning': 'Ending the game',
     'nav.house': 'Our fixes',
+    'nav.picker': 'Draw',
     'nav.cheatsheet': 'Cheat sheet',
 
     'hero.cta': 'Read the rules',
@@ -69,6 +80,15 @@ export const ui = {
 
     'toc.title': 'Contents',
     'jumpTo': 'Jump to',
+
+    'picker.title': 'Group draw',
+    'picker.subtitle':
+      'Enter three names and let chance decide who gets which group of balls.',
+    'picker.player': 'Player',
+    'picker.draw': '🎲 Draw groups',
+    'picker.again': '🎲 Draw again',
+    'picker.result': 'The draw',
+    'picker.needNames': 'Fill in all three names.',
 
     'cheatsheet.title': 'One-page cheat sheet',
     'cheatsheet.subtitle': 'A quick reference for when the table starts arguing.',

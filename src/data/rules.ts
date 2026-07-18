@@ -4,8 +4,8 @@
 // improvements over classic cut-throat (the resolved edge cases). Those are the
 // ones most worth reviewing.
 //
-// Body text supports a tiny inline markup: **bold**. Each string in `body` is a
-// separate paragraph (rendered as its own <p>).
+// Body text supports a tiny inline markup: **bold** and [link](#anchor). Each
+// string in `body` is a separate paragraph (rendered as its own <p>).
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface L10n {
@@ -59,8 +59,8 @@ export const sections: Section[] = [
         title: { cs: 'Základní myšlenka', en: 'The basic idea' },
         body: [
           {
-            cs: 'Patnáct koulí se rozdělí na tři skupiny po pěti. Každý hráč má jednu skupinu koulí. Tvým úkolem je potopit koule soupeřů a uchránit ty svoje. **Vyhrává ten, komu na stole zůstane jako poslednímu aspoň jedna vlastní koule.**',
-            en: "The fifteen object balls split into three groups of five. Each player owns one group. Your job is to sink your opponents' balls and protect your own. **The last player with at least one of their own balls still on the table wins.**",
+            cs: 'Patnáct koulí se rozdělí na tři skupiny po pěti. Každý hráč má jednu skupinu koulí — kterou, to rozhodne [losovačka](#picker). Tvým úkolem je potopit koule soupeřů a uchránit ty svoje. **Vyhrává ten, komu na stole zůstane jako poslednímu aspoň jedna vlastní koule.**',
+            en: "The fifteen object balls split into three groups of five. Each player owns one group — which one is settled by the [group draw](#picker). Your job is to sink your opponents' balls and protect your own. **The last player with at least one of their own balls still on the table wins.**",
           },
         ],
       },
@@ -100,8 +100,8 @@ export const sections: Section[] = [
         title: { cs: 'Rozdělení skupin', en: 'Who owns which group' },
         body: [
           {
-            cs: 'Skupiny si rozdělte před rozstřelem — kámen-nůžky-papír, tahem koule z pytlíku nebo šťouchem „na dálku" o pořadí — je to úplně jedno, žádná skupina koulí nemá specifickou výhodu. Přiřazení platí **na celou hru** a už se nemění. Hráči se pak střídají **podle pořadí skupin (první A, pak B a poslední C).**',
-            en: 'Split the groups **before the break** — rock-paper-scissors, drawing a ball from a bag, or lagging for order — it truly does not matter, no group has a built-in advantage. The assignment holds **for the whole game** and never changes. Players then take turns **in group order (A first, then B, and C last).**',
+            cs: 'Skupiny si rozdělte **před rozstřelem** — napište tři jména do [losovačky](#picker) a ta každému přiřadí jednu skupinu. Žádná skupina koulí nemá specifickou výhodu, takže je los spravedlivý. Přiřazení platí **na celou hru** a už se nemění. Hráči se pak střídají **podle pořadí skupin (první A, pak B a poslední C).**',
+            en: 'Split the groups **before the break** — put the three names into the [group draw](#picker) and it assigns everyone a group. No group of balls has a built-in advantage, so the draw is fair. The assignment holds **for the whole game** and never changes. Players then take turns **in group order (A first, then B, and C last).**',
           },
           {
             cs: 'V původní hře se skupina „získávala" až potopením první koule, což vedlo k nejasnostem. My ji přidělujeme dopředu — je to jednoznačné.',
@@ -158,8 +158,8 @@ export const sections: Section[] = [
         title: { cs: 'Tahy a pokračování', en: 'Turns and continuation' },
         body: [
           {
-            cs: 'Hraješ tak dlouho, dokud každým šťouchem **legálně potopíš aspoň jednu soupeřovu kouli.** Jakmile žádnou soupeřovu kouli nepotopíš (nebo fauluješ), tah přechází na dalšího hráče v pořadí skupin (A → B → C → A atd.).',
-            en: 'You keep shooting as long as every shot **legally pockets at least one opponent ball.** The moment you fail to pocket an opponent ball (or you foul), your turn passes to the next player in group order (A → B → C → A …).',
+            cs: 'Hraješ tak dlouho, dokud každým šťouchem **legálně potopíš aspoň jednu soupeřovu kouli.** Jakmile žádnou soupeřovu kouli nepotopíš (nebo fauluješ), tah přechází na dalšího hráče v pořadí skupin.',
+            en: 'You keep shooting as long as every shot **legally pockets at least one opponent ball.** The moment you fail to pocket an opponent ball (or you foul), your turn passes to the next player in group order.',
           },
         ],
       },
@@ -338,8 +338,8 @@ export const sections: Section[] = [
         title: { cs: 'Skupiny se přidělují předem', en: 'Groups are assigned up front' },
         body: [
           {
-            cs: 'Žádné „získávání" skupiny potopením první koule. Losuje se před rozstřelem a platí na celou hru.',
-            en: 'No claiming a group by the first pot. Draw before the break, fixed for the game.',
+            cs: 'Žádné „získávání" skupiny potopením první koule. [Losuje se](#picker) před rozstřelem a platí na celou hru.',
+            en: 'No claiming a group by the first pot. [Draw](#picker) before the break, fixed for the game.',
           },
         ],
       },
