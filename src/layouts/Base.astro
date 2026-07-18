@@ -106,13 +106,12 @@ const jsonLd = {
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="theme-color" content="#0c5e40" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts are self-hosted (see src/styles/fonts.css); preload the subsets
+         every page uses. Czech text and "Trulečník" itself need latin-ext. -->
+    <link rel="preload" href="/fonts/baloo2-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/baloo2-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/nunito-latin-ext.woff2" as="font" type="font/woff2" crossorigin />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>

@@ -4,6 +4,9 @@
    colors, rounded shapes, soft shadows.
    ───────────────────────────────────────────────────────────────────────── */
 
+/* Self-hosted variable fonts (latin + latin-ext subsets, served from /fonts/). */
+@import './fonts.css';
+
 :root {
   /* Surfaces */
   --cream: #fbf6ea;
