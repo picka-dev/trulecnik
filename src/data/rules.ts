@@ -51,7 +51,7 @@ export const sections: Section[] = [
     title: { cs: 'Co je Trulečník', en: 'What is Trulečník' },
     intro: {
       cs: 'Trulečník je kulečník pro tři hráče najednou. Vychází z klasické hry cut-throat, ale doladili jsme ji tak, aby zmizela většina sporných momentů.',
-      en: 'Trulečník is billiards for three players at once. It is built on classic cut-throat, but we have tuned it so that every argument-starting edge case now has a clear answer.',
+      en: 'Trulečník is billiards for three players at once. It is built on classic cut-throat, but we have tuned it so that most of the argument-starting edge cases now have a clear answer.',
     },
     rules: [
       {
@@ -100,8 +100,8 @@ export const sections: Section[] = [
         title: { cs: 'Rozdělení skupin', en: 'Who owns which group' },
         body: [
           {
-            cs: 'Skupiny si rozdělte **před rozstřelem** — napište tři jména do [losovačky](#picker) a ta každému přiřadí jednu skupinu. Žádná skupina koulí nemá specifickou výhodu, takže je los spravedlivý. Přiřazení platí **na celou hru** a už se nemění. Hráči se pak střídají **podle pořadí skupin (první A, pak B a poslední C).**',
-            en: 'Split the groups **before the break** — put the three names into the [group draw](#picker) and it assigns everyone a group. No group of balls has a built-in advantage, so the draw is fair. The assignment holds **for the whole game** and never changes. Players then take turns **in group order (A first, then B, and C last).**',
+            cs: 'Skupiny si rozdělte **před rozstřelem** — napište tři jména do [losovačky](#picker) a ta každému přiřadí jednu skupinu. Přiřazení platí **na celou hru** a už se nemění. Hráči se střídají **podle pořadí skupin (první A, pak B a poslední C)** a hráč se skupinou A [rozstřeluje](#setup-break). Samotné skupiny koulí jsou rovnocenné a pořadí na tahu rozděluje náhoda — los je tedy férový.',
+            en: 'Split the groups **before the break** — put the three names into the [group draw](#picker) and it assigns everyone a group. The assignment holds **for the whole game** and never changes. Players take turns **in group order (A first, then B, and C last)**, and the player with group A [breaks](#setup-break). The ball groups themselves are all equal, and the turn order is dealt out by chance — so the draw is fair.',
           },
           {
             cs: 'V původní hře se skupina „získávala" až potopením první koule, což vedlo k nejasnostem. My ji přidělujeme dopředu — je to jednoznačné.',
@@ -125,12 +125,12 @@ export const sections: Section[] = [
         title: { cs: 'Rozstřel', en: 'The break' },
         body: [
           {
-            cs: 'Rozstřelující hráč má bílou v ruce za čárou (head string). Rozstřel je platný, když **potopí aspoň jednu kouli, nebo pošle aspoň čtyři koule na mantinel.** Když to nesplní, je to faul a další hráč může buď hrát pozici jak leží, nebo nechat znovu postavit a rozstřelit sám.',
-            en: 'The breaker has the cue ball in hand behind the head string. The break is legal if it **pockets at least one ball or drives at least four balls to a cushion.** If it does not, it is a foul and the next player may either play the table as it lies, or have it re-racked and break themselves.',
+            cs: 'Rozstřeluje hráč se skupinou A; bílou má v ruce za čárou (head string). Rozstřel je platný, když **potopí aspoň jednu číslovanou kouli, nebo pošle aspoň čtyři koule na mantinel.** Když to nesplní, je to faul s vlastním trestem: další hráč může buď hrát pozici jak leží, nebo nechat znovu postavit a rozstřelit sám.',
+            en: 'The player who drew group A breaks, with the cue ball in hand behind the head string. The break is legal if it **pockets at least one numbered ball or drives at least four balls to a cushion.** If it does not, it is a foul with its own penalty: the next player may either play the table as it lies, or have it re-racked and break themselves.',
           },
           {
-            cs: 'Když při rozstřelu potopíš soupeřovu kouli, pokračuješ dál. Když spadne jen tvoje vlastní, zůstává dole a tah přechází na dalšího. Když spadne bílá, je to faul: soupeř, který hraje po tobě, dostává bílou do ruky za čárou a hraje na koule na druhé straně čáry.',
-            en: "If the break pockets an opponent's ball, you keep shooting. If only your own drops, it stays down and the turn passes on. If the cue ball drops, it is a foul: the opponent who shoots after you takes the cue ball in hand behind the head string and plays at the balls on the far side of the line.",
+            cs: 'Když při rozstřelu potopíš soupeřovu kouli (a žádnou svoji), pokračuješ dál. Když spadne tvoje vlastní — sama, nebo spolu se soupeřovou — platí normálně pravidlo [Když spadne tvoje vlastní koule](#play-own-ball): zůstává dole a tah přechází na dalšího. Když spadne bílá, je to faul: soupeř, který hraje po tobě, dostává bílou do ruky za čárou a hraje na koule na druhé straně čáry.',
+            en: "If the break pockets an opponent's ball (and none of your own), you keep shooting. If your own ball drops — alone or together with an opponent's — the [When you sink your own ball](#play-own-ball) rule applies as usual: it stays down and the turn passes on. If the cue ball drops, it is a foul: the opponent who shoots after you takes the cue ball in hand behind the head string and plays at the balls on the far side of the line.",
           },
         ],
       },
@@ -158,8 +158,8 @@ export const sections: Section[] = [
         title: { cs: 'Tahy a pokračování', en: 'Turns and continuation' },
         body: [
           {
-            cs: 'Hraješ tak dlouho, dokud každým šťouchem **legálně potopíš aspoň jednu soupeřovu kouli.** Jakmile žádnou soupeřovu kouli nepotopíš (nebo fauluješ), tah přechází na dalšího hráče v pořadí skupin.',
-            en: 'You keep shooting as long as every shot **legally pockets at least one opponent ball.** The moment you fail to pocket an opponent ball (or you foul), your turn passes to the next player in group order.',
+            cs: 'Hraješ tak dlouho, dokud každým šťouchem **legálně potopíš aspoň jednu soupeřovu kouli — a žádnou vlastní.** Jakmile žádnou soupeřovu kouli nepotopíš, potopíš vlastní, nebo fauluješ, tah přechází na dalšího hráče v pořadí skupin. Jediná výjimka: první ze [dvou šťouchů po faulu](#fouls-penalty) nemusí potopit nic.',
+            en: 'You keep shooting as long as every shot **legally pockets at least one opponent ball — and none of your own.** The moment you fail to pocket an opponent ball, sink one of your own, or foul, your turn passes to the next player in group order. The one exception: the first of the [two shots after a foul](#fouls-penalty) does not have to pocket anything.',
           },
         ],
       },
@@ -173,8 +173,8 @@ export const sections: Section[] = [
             en: "A legal shot has two conditions. The cue ball must **first strike one of your opponents' balls** — any of them will do. And **after that contact, either a ball must be pocketed or at least one ball must reach a cushion.** If the cue ball hits one of your own balls first, or neither of those happens after contact, it is a foul.",
           },
           {
-            cs: 'U obou těchto faulů bílá zůstává ležet, kde je — soupeř, který hraje po tobě, si ji nebere do ruky, ale má **dva šťouchy**: prvním si může bílou rozehrát do lepší pozice a teprve druhým potápět.',
-            en: 'On both of these fouls the cue ball stays where it lies — the opponent who shoots after you does not get ball in hand, but gets **two shots**: the first to nudge the cue ball into a better spot, the second to actually pot.',
+            cs: 'U obou těchto faulů bílá zůstává ležet, kde je — soupeř, který hraje po tobě, si ji nebere do ruky, ale má **dva šťouchy**: prvním si obvykle rozehraje bílou do lepší pozice, klidně ale může rovnou potápět. Jak přesně dva šťouchy fungují, popisuje [Trest za faul](#fouls-penalty).',
+            en: 'On both of these fouls the cue ball stays where it lies — the opponent who shoots after you does not get ball in hand, but gets **two shots**: usually the first nudges the cue ball into a better spot, though potting right away is fine too. How exactly the two shots work is spelled out under [The penalty for a foul](#fouls-penalty).',
           },
         ],
       },
@@ -184,8 +184,16 @@ export const sections: Section[] = [
         title: { cs: 'Když spadne tvoje vlastní koule', en: 'When you sink your own ball' },
         body: [
           {
-            cs: 'Stane se. Tvoje potopená koule **zůstává dole** — právě jsi si ublížil sám a navíc jsi pomohl soupeři, který hraje v kole před tebou: díky tobě se mu vrací jedna jeho koule do hry, pokud nějakou potopenou má. Když už byl tento soupeř vyřazený, touhle vrácenou koulí se rovnou vrací zpátky do hry. Vrácená koule se pokládá na zadní značku (foot spot) stejně jako každá jiná vrácená koule. Potopením vlastní koule ti končí tah — bílá zůstává ležet a normálně hraje další hráč v pořadí. Když jsi ale jedním šťouchem potopil svoji kouli i soupeřovu, tvoje koule **i tak zůstává dole**. Navíc se soupeři vrací zpět i ta jeho koule, kterou jsi právě potopil — pokládá se na zadní značku (foot spot) stejně jako každá jiná vrácená koule.',
-            en: 'It happens. Your potted ball **stays down** — you have just hurt yourself, and on top of that you have helped the opponent who takes their turn just before you: thanks to you, one of their balls comes back into play, provided they have any pocketed. If that opponent had already been eliminated, this returned ball brings them straight back into the game. The returned ball goes on the foot spot, just like any other returned ball. Potting your own ball ends your turn — the cue ball stays where it lies and the next player simply plays on. If, however, a single shot potted both your own ball and an opponent’s, your ball **still stays down** — and on top of that, the opponent gets back the very ball you just sank, spotted on the foot spot like any other returned ball.',
+            cs: 'Stane se. Tvoje potopená koule **zůstává dole** — právě jsi si ublížil sám a navíc jsi pomohl **předchozímu hráči v pořadí skupin**: díky tobě se mu vrací jedna jeho koule do hry, pokud nějakou potopenou má. Počítá se čistě pořadí skupin, i když je tento hráč zrovna vyřazený — touhle vrácenou koulí se rovnou vrací zpátky do hry. Vrácená koule se pokládá na [zadní značku](#fouls-spotting).',
+            en: 'It happens. Your potted ball **stays down** — you have just hurt yourself, and on top of that you have helped the **previous player in group order**: thanks to you, one of their balls comes back into play, provided they have any pocketed. Pure group order counts here, even if that player is currently eliminated — this returned ball brings them straight back into the game. The returned ball goes on the [foot spot](#fouls-spotting).',
+          },
+          {
+            cs: 'Potopení vlastní koule ti **vždy končí tah** — i kdybys stejným šťouchem potopil i soupeřovu kouli. V takovém případě tvoje koule i tak zůstává dole a soupeři se navíc vrací ta jeho koule, kterou jsi právě potopil.',
+            en: "Sinking your own ball **always ends your turn** — even if the same shot also potted an opponent's ball. In that case your ball still stays down, and on top of that the opponent gets back the very ball you just sank.",
+          },
+          {
+            cs: 'Pokud šťouch nebyl zároveň faul, bílá zůstává ležet a normálně hraje další hráč v pořadí. Když faul byl (třeba jsi potopil i bílou), vracení koulí proběhne úplně stejně a k tomu se přidá běžný [trest za faul](#fouls-penalty).',
+            en: 'If the shot was not also a foul, the cue ball stays where it lies and the next player simply plays on. If it was (say you scratched too), the returns happen exactly the same and the usual [foul penalty](#fouls-penalty) is added on top.',
           },
         ],
       },
@@ -207,8 +215,8 @@ export const sections: Section[] = [
         title: { cs: 'Co je faul', en: 'What counts as a foul' },
         body: [
           {
-            cs: 'Faul je zejména: potopení bílé koule, bílá mimo stůl, žádný kontakt s koulí, první kontakt s vlastní koulí, nebo když se po kontaktu nic nepotopí a žádná koule se nedotkne mantinelu. Faul je i dvojitý zásah nebo tlačená koule.',
-            en: 'A foul is, in particular: pocketing the cue ball (a scratch), the cue ball leaving the table, hitting no ball at all, hitting one of your own balls first, or — after contact — pocketing nothing while no ball reaches a cushion. Double hits and push shots are fouls too.',
+            cs: 'Faul je zejména: potopení bílé koule, bílá nebo číslovaná koule vyražená mimo stůl, žádný kontakt s koulí, první kontakt s vlastní koulí, nebo když se po kontaktu nic nepotopí a žádná koule se nedotkne mantinelu. Faul je i dvojitý zásah nebo tlačená koule.',
+            en: 'A foul is, in particular: pocketing the cue ball (a scratch), the cue ball or any numbered ball knocked off the table, hitting no ball at all, hitting one of your own balls first, or — after contact — pocketing nothing while no ball reaches a cushion. Double hits and push shots are fouls too.',
           },
         ],
       },
@@ -218,20 +226,24 @@ export const sections: Section[] = [
         title: { cs: 'Trest za faul', en: 'The penalty for a foul' },
         body: [
           {
-            cs: 'Trest za faul závisí jen na tom, kde skončí bílá koule:',
-            en: 'The penalty for a foul depends only on where the cue ball ends up:',
+            cs: 'Trest za faul se řídí tím, kde skončí bílá koule. („Následující hráč" je vždy další žijící hráč v pořadí skupin; vlastní trest má jen nepovedený [rozstřel](#setup-break).)',
+            en: 'The penalty for a foul follows where the cue ball ends up. ("The next player" always means the next surviving player in group order; only a failed [break](#setup-break) has its own penalty.)',
           },
           {
-            cs: '**Bílá skončila mimo hrací plochu** — spadla do kapsy, sletěla ze stolu, nebo jde o faul z rozstřelu. Následující hráč dostává **bílou do ruky** a položí ji, kam chce (u faulu z rozstřelu za čáru).',
-            en: '**The cue ball left the playing area** — potted, off the table, or a foul on the break. The next player takes the **cue ball in hand** and places it anywhere (behind the head string after a break foul).',
+            cs: '**Bílá skončila mimo hrací plochu** — spadla do kapsy, nebo sletěla ze stolu. Následující hráč dostává **bílou do ruky** a položí ji, kam chce (po potopení bílé při rozstřelu jen za čáru). Úplně stejně se trestá vyražení číslované koule ze stolu — vyražená koule se navíc vrací na [zadní značku](#fouls-spotting).',
+            en: '**The cue ball left the playing area** — potted, or off the table. The next player takes the **cue ball in hand** and places it anywhere (only behind the head string after a scratch on the break). Knocking a numbered ball off the table is punished exactly the same — and the launched ball goes back on the [foot spot](#fouls-spotting).',
           },
           {
-            cs: '**Bílá zůstala na stole** — žádný kontakt, první kontakt s vlastní koulí, nebo se po kontaktu nic nepotopilo ani se žádná koule nedotkla mantinelu. Bílá zůstává, kde leží, a následující hráč má **dva šťouchy** (prvním si může bílou rozehrát, potápí až druhým).',
-            en: '**The cue ball stayed on the table** — no contact, first contact with one of your own balls, or nothing potted and no ball reaching a cushion after contact. The cue ball stays where it lies and the next player gets **two shots** (reposition the cue ball with the first, only pot on the second).',
+            cs: '**Bílá zůstala na stole** — žádný kontakt, první kontakt s vlastní koulí, nebo se po kontaktu nic nepotopilo ani se žádná koule nedotkla mantinelu. Bílá zůstává, kde leží, a následující hráč má **dva šťouchy**.',
+            en: '**The cue ball stayed on the table** — no contact, first contact with one of your own balls, or nothing potted and no ball reaching a cushion after contact. The cue ball stays where it lies and the next player gets **two shots**.',
           },
           {
-            cs: 'Číslované koule potopené faulovaným šťouchem zůstávají dole a za faul se nikomu nevrací žádná koule — na stůl se vrací jen bílá, a to jen když opustila hrací plochu. Koule se vrací výhradně tehdy, když si někdo potopí vlastní kouli (viz „Když spadne tvoje vlastní koule").',
-            en: 'Numbered balls potted on the fouling shot stay down, and a foul returns no ball to anyone — only the cue ball comes back, and only when it left the playing area. Balls return solely when a player sinks their own ball (see “When you sink your own ball”).',
+            cs: 'Dva šťouchy fungují takhle: první šťouch je **osvobozený od podmínek platného šťouchu** — smíš bílou jen rozehrát do lepší pozice, nic netrefit ani nepotopit, a faul to není. Když prvním šťouchem rovnou legálně potopíš soupeřovu kouli, hraješ normálně dál — druhý šťouch propadá, do dalších šťouchů se nepřenáší. Ostatní fauly (potopená bílá, koule vyražená ze stolu, dvojitý zásah…) platí i pro první šťouch a potopení vlastní koule ti i tady končí tah — v obou případech o druhý šťouch přicházíš.',
+            en: 'The two shots work like this: the first shot is **exempt from the legal-shot conditions** — you may simply nudge the cue ball into a better spot, hitting and potting nothing, and it is not a foul. If your first shot legally pockets an opponent ball right away, you just keep shooting as normal — the second shot is forfeited, it does not carry over. All other fouls (a scratch, a ball knocked off the table, a double hit…) still apply to the first shot, and sinking your own ball ends your turn here too — either way you lose the second shot.',
+          },
+          {
+            cs: 'Faulem se nikomu nevrací žádná koule z kapsy — číslované koule potopené faulovaným šťouchem zůstávají dole. Z kapes se koule vrací výhradně podle pravidla [Když spadne tvoje vlastní koule](#play-own-ball) — a to platí i tehdy, když byl šťouch zároveň faul.',
+            en: "A foul never brings anyone's ball back out of a pocket — numbered balls potted on the fouling shot stay down. Pocketed balls return solely under the [When you sink your own ball](#play-own-ball) rule — and that rule applies even when the shot was also a foul.",
           },
         ],
       },
@@ -264,6 +276,14 @@ export const sections: Section[] = [
             cs: 'Jsi ze hry ve chvíli, kdy máš na stole **nula vlastních koulí.** Koule potopené jedním šťouchem se počítají **naráz** — nejdřív se dohraje šťouch, teprve pak se vyhodnotí, kdo skončil. Platí to i pro tebe: když si sám potopíš svou poslední kouli, končíš — i kdyby sis ji „podřízl" vlastním tágem.',
             en: 'You are out the instant you have **zero of your own balls** on the table. Balls pocketed on a single shot count **simultaneously** — the shot finishes first, then eliminations are checked. This applies to you too: if you sink your own last ball, you are out — even if you did it with your own cue.',
           },
+          {
+            cs: 'Šťouch se vyhodnocuje v pevném pořadí: nejdřív dopadnou koule, pak se na stůl položí [vrácené koule](#play-own-ball), a teprve nakonec se kontroluje vyřazení a vítězství.',
+            en: 'A shot resolves in a fixed order: first the balls drop, then any [returned balls](#play-own-ball) are spotted, and only then are eliminations and the win checked.',
+          },
+          {
+            cs: 'Příklad: hráč A je vyřazený a hráč B jedním šťouchem potopí svou poslední kouli i poslední kouli hráče C. Koule hráče C se vrací na stůl (spadla spolu s vlastní koulí hráče B), hráč A dostává jednu svou kouli zpět (B si potopil vlastní) — a teprve teď se počítá stav: B je bez koulí a vypadává, A i C mají po jedné kouli a hra pokračuje. Na tahu je C, další žijící hráč po B.',
+            en: "An example: player A is eliminated, and player B pots their own last ball and player C's last ball with a single shot. C's ball comes back to the table (it fell together with B's own ball), player A gets one ball back (B sank their own) — and only now is the state counted: B has no balls and drops out, A and C have one ball each, and the game goes on. C, the next surviving player after B, is up.",
+          },
         ],
       },
       {
@@ -272,8 +292,8 @@ export const sections: Section[] = [
         title: { cs: 'Kdo vyhrává', en: 'Who wins' },
         body: [
           {
-            cs: 'Jakmile po dohraném šťouchu zůstane s koulemi na stole **jediný hráč, okamžitě vyhrává.** Nemusí už nic dohrávat.',
-            en: 'As soon as, after a shot settles, exactly **one player** has any balls left, that player **wins immediately.** No need to clear anything further.',
+            cs: 'Jakmile po dohraném šťouchu (včetně položení vrácených koulí) zůstane s vlastními koulemi na stole **jediný hráč, okamžitě vyhrává.** Nemusí už nic dohrávat.',
+            en: 'As soon as a shot settles (returned balls spotted included) and exactly **one player** has any of their own balls left, that player **wins immediately.** No need to clear anything further.',
           },
         ],
       },
@@ -286,8 +306,8 @@ export const sections: Section[] = [
         },
         body: [
           {
-            cs: 'Když jediným šťouchem potopíš **poslední koule všech soupeřů naráz** (a na stole zůstanou jen tvoje), **vyhráváš.**',
-            en: "If a single shot pockets **all remaining opponents' last balls at once** (leaving only yours), you **win.**",
+            cs: 'Když jediným šťouchem potopíš **poslední koule všech soupeřů naráz** a žádnou svoji, **vyhráváš** — na stole zůstaly jen tvoje koule. (Kdyby přitom spadla i tvoje vlastní, platí pravidlo [Když spadne tvoje vlastní koule](#play-own-ball) a hraje se dál.)',
+            en: "If a single shot pockets **all remaining opponents' last balls at once** and none of your own, you **win** — only your balls are left on the table. (If your own ball fell too, the [When you sink your own ball](#play-own-ball) rule applies and play goes on.)",
           },
         ],
       },
@@ -300,8 +320,8 @@ export const sections: Section[] = [
         },
         body: [
           {
-            cs: 'Po šťouchu spočítej hráče, kterým zůstala aspoň jedna vlastní koule. Zůstane-li jeden, vyhrává. Zůstanou-li dva a víc, hra pokračuje: vyřazení jsou (prozatím) ze hry a tah jde na dalšího žijícího hráče v pořadí skupin. Ty pokračuješ v tahu jen tehdy, když byl šťouch platný, potopil aspoň jednu soupeřovu kouli **a ty jsi sám nevypadl.**',
-            en: 'After the shot, count the players who still have at least one of their own balls. If one remains, they win. If two or more remain, play continues: the eliminated are out (for now) and the turn passes to the next surviving player in group order. You keep shooting only if the shot was legal, pocketed at least one opponent ball, **and you did not eliminate yourself.**',
+            cs: 'Po šťouchu spočítej hráče, kterým zůstala aspoň jedna vlastní koule. Zůstane-li jeden, vyhrává. Zůstanou-li dva a víc, hra pokračuje: vyřazení jsou (prozatím) ze hry a tah jde na dalšího žijícího hráče v pořadí skupin. Ty pokračuješ v tahu jen tehdy, když byl šťouch platný, potopil aspoň jednu soupeřovu kouli **a žádnou tvoji vlastní.**',
+            en: 'After the shot, count the players who still have at least one of their own balls. If one remains, they win. If two or more remain, play continues: the eliminated are out (for now) and the turn passes to the next surviving player in group order. You keep shooting only if the shot was legal, pocketed at least one opponent ball, **and none of your own.**',
           },
         ],
       },
@@ -311,7 +331,7 @@ export const sections: Section[] = [
         title: { cs: 'Patová situace', en: 'Stalemate' },
         body: [
           {
-            cs: 'Když se všichni tři shodnou, že se hra nikam nehne (třeba samé bezpečné šťouchy dokola), nechte znovu postavit. Nový rozstřel má další hráč po tom, kdo rozstřeloval naposledy. Skupiny zůstávají stejné.',
+            cs: 'Když se všichni tři shodnou, že se hra nikam nehne (třeba samé bezpečné šťouchy dokola), nechte znovu postavit. Nový rozstřel má další hráč v pořadí skupin po tom, kdo rozstřeloval naposledy. Skupiny zůstávají stejné.',
             en: 'If all three agree the game is going nowhere (endless safeties, say), re-rack. The new break goes to the next player in group order after whoever broke last. Groups stay the same.',
           },
         ],
@@ -352,8 +372,8 @@ export const sections: Section[] = [
         },
         body: [
           {
-            cs: 'Potopená vlastní koule zůstává dole, tvůj tah končí a soupeři před tebou se vrací jedna koule do hry.',
-            en: 'A sunk own-ball stays down, your turn ends, and the opponent before you gets one ball back.',
+            cs: 'Potopená vlastní koule zůstává dole, tvůj tah vždy končí a předchozímu hráči v pořadí skupin se vrací jedna koule do hry.',
+            en: 'A sunk own-ball stays down, your turn always ends, and the previous player in group order gets one ball back.',
           },
         ],
       },
@@ -366,8 +386,8 @@ export const sections: Section[] = [
         },
         body: [
           {
-            cs: 'Sjednotili jsme trest za faul podle bílé: když opustí hrací plochu, dostává následující hráč bílou do ruky; když zůstane na stole, má dva šťouchy. Za faul se žádná koule nevrací.',
-            en: 'We unified the foul penalty around the cue ball: if it leaves the playing area the next player gets ball in hand; if it stays on the table, they get two shots. No ball is returned for a foul.',
+            cs: 'Sjednotili jsme trest za faul podle bílé: když opustí hrací plochu (nebo vyrazíš ze stolu číslovanou kouli), dostává následující hráč bílou do ruky; když bílá zůstane na stole, má dva šťouchy. Vlastní trest má jen nepovedený rozstřel. Faul sám o sobě žádnou kouli z kapsy nevrací.',
+            en: 'We unified the foul penalty around the cue ball: if it leaves the playing area (or you knock a numbered ball off the table) the next player gets ball in hand; if it stays on the table, they get two shots. Only a failed break has its own penalty. A foul by itself brings no ball back out of a pocket.',
           },
         ],
       },
@@ -404,23 +424,23 @@ export const cheatsheet: L10n[] = [
   },
   {
     cs: 'Potápěj soupeře, chraň si svoje. Poslední s vlastní koulí na stole vyhrává.',
-    en: 'Sink opponents, protect your own. Last with a ball on the table wins.',
+    en: 'Sink opponents, protect your own. The last player with their own ball on the table wins.',
   },
   {
-    cs: 'Hraješ dál, dokud každým šťouchem potopíš soupeřovu kouli.',
-    en: 'Keep shooting while every shot pockets an opponent ball.',
+    cs: 'Hraješ dál, dokud každým šťouchem potopíš soupeřovu kouli a žádnou vlastní.',
+    en: 'Keep shooting while every shot pockets an opponent ball and none of your own.',
   },
   {
-    cs: 'Vlastní koule: zůstává dole, tah končí, soupeři před tebou se vrací koule.',
-    en: 'Own ball: it stays down, your turn ends, the opponent before you gets a ball back.',
+    cs: 'Vlastní koule: zůstává dole, tah končí, hráči před tebou v pořadí se vrací koule.',
+    en: 'Own ball: it stays down, your turn ends, the player before you in group order gets a ball back.',
   },
   {
-    cs: 'Faul: bílá mimo plochu → bílá do ruky; bílá na stole → dva šťouchy.',
-    en: 'Foul: cue ball off the area → ball in hand; cue ball on the table → two shots.',
+    cs: 'Faul: bílá (či vyražená koule) mimo plochu → bílá do ruky; bílá na stole → dva šťouchy.',
+    en: 'Foul: cue ball (or a launched ball) off the area → ball in hand; cue ball on the table → two shots.',
   },
   {
-    cs: 'Nula vlastních koulí = konec — vrátí tě, až soupeř po tobě potopí vlastní kouli.',
-    en: 'Zero of your own balls = out — you return when the opponent after you sinks their own ball.',
+    cs: 'Nula vlastních koulí = konec — vrátí tě, až hráč po tobě v pořadí potopí vlastní kouli.',
+    en: 'Zero of your own balls = out — you return when the player after you in group order sinks their own ball.',
   },
   {
     cs: 'Koule z jednoho šťouchu padají naráz — rozhoduje stav stolu.',
